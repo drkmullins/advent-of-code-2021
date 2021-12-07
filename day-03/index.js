@@ -3,10 +3,10 @@ const fs = require('fs');
 const str = fs.readFileSync('./input.txt', 'utf-8').toString();
 const arrays = str.split('\n').map(diagnostic => diagnostic.split(''));
 
-let gamma = Array(arrays[0].length);
-let epsilon = Array(arrays[0].length);
+let gamma = [];
+let epsilon = [];
 
-for (let i = 0; i < gamma.length; i++) {
+for (let i = 0; i < arrays[0].length; i++) {
   let counter = 0;
   for (let j = 0; j < arrays.length; j++) {
     counter += Number(arrays[j][i]);
