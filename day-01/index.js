@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const str = fs.readFileSync('input.txt', 'utf-8').toString();
+const str = fs.readFileSync('./input.txt', 'utf-8').toString();
 const array = str.split('\n').map(numStr => Number(numStr));
 
 let count = 0;
