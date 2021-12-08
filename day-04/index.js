@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { exit } = require('process');
 
 let [drawnNumbers, ...boards] = fs.readFileSync('./input.txt', 'utf-8').toString().split('\n\n');
 boards = boards.map(board =>
@@ -41,10 +40,10 @@ drawnNumbers.forEach(drawn => {
 
   if (winners.size === 1 && !hasFirstWinner) {
     hasFirstWinner = true;
-    printWinnerScore([...winners][0], drawn, '1')
+    printWinnerScore([...winners][0], drawn, '1');
   }
   if (winners.size === boards.length && !hasLastWinner) {
     hasLastWinner = true;
-    printWinnerScore([...winners][winners.size - 1], drawn, '2')
+    printWinnerScore([...winners][winners.size - 1], drawn, '2');
   }
 })
