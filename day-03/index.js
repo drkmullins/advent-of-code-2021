@@ -23,9 +23,7 @@ console.log('Solution 1', gamma * epsilon);
 const getRating = (thisArray, currentPosition, preferredBit, nonPreferredBit) => {
   const comparator = thisArray.reduce((accum, num) => accum += num[currentPosition] === '1' ? 1 : -1, 0);
   const bitToKeep = comparator >= 0 ? preferredBit : nonPreferredBit;
-  console.log('bitToKeep', bitToKeep);
   const nextArray = thisArray.filter(num => num[currentPosition] === bitToKeep);
-  console.log('nextArray.length', nextArray.length);
   if (nextArray.length === 1) return parseInt(nextArray[0], 2);
   return getRating(nextArray, ++currentPosition, preferredBit, nonPreferredBit);
 };
