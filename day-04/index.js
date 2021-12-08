@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { exit } = require('process');
 
 let [drawnNumbers, ...boards] = fs.readFileSync('./input.txt', 'utf-8').toString().split('\n\n');
 boards = boards.map(board =>
@@ -9,8 +10,17 @@ boards = boards.map(board =>
 );
 drawnNumbers = drawnNumbers.split(',').map(numStr => Number(numStr));
 
-let winner;
-for (const drawn of drawnNumbers) {
+const printWinnerScore = (winner, drawn, solutionNum) => {
+  const unchecked = winner.flatMap((line) => line.filter((num) => !num.isChecked)).map((num) => num.val)
+  const sumUnchecked = unchecked.reduce((a, b) => a + b);
+  const score = drawn * sumUnchecked;
+  console.log('Solution', solutionNum, score);
+};
+
+let winners = new Set();
+let hasFirstWinner = false;
+let hasLastWinner = false;
+drawnNumbers.forEach(drawn => {
   boards.forEach(board => {
     let columnChecks = {};
     board.forEach(line => {
@@ -21,19 +31,20 @@ for (const drawn of drawnNumbers) {
           linesChecked++;
           columnChecks[columnIndex] = (columnChecks[columnIndex] || 0) + 1;
         }
-        if (linesChecked >= line.length) winner = board;
+        if (linesChecked >= line.length) winners.add(board);
       });
       if (Object.values(columnChecks).some(val => val >= board.length)) {
-        winner = board;
+        winners.add(board);
       }
     });
   });
 
-  if (winner) {
-    const unchecked = winner.flatMap((line) => line.filter((num) => !num.isChecked)).map((num) => num.val)
-    const sumUnchecked = unchecked.reduce((a, b) => a + b);
-    const score = drawn * sumUnchecked;
-    console.log('Solution 1', score);
-    return;
+  if (winners.size === 1 && !hasFirstWinner) {
+    hasFirstWinner = true;
+    printWinnerScore([...winners][0], drawn, '1')
   }
-}
+  if (winners.size === boards.length && !hasLastWinner) {
+    hasLastWinner = true;
+    printWinnerScore([...winners][winners.size - 1], drawn, '2')
+  }
+})
